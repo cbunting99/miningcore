@@ -32,7 +32,7 @@ Code contributions are very welcome and should be submitted as standard [pull re
 ## Building on Debian/Ubuntu
 
 ```console
-git clone https://github.com/blackmennewstyle/miningcore
+git clone https://github.com/cbunting99/miningcore
 cd miningcore
 ```
 
