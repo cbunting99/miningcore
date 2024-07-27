@@ -59,7 +59,7 @@ static void getAlgoString(const uint8_t* prevblock, char *output)
     *sptr = '\0';
 }
 
-void x16rv2_hash(const char* input, char* output, uint32_t len)
+void x16rv2_hash(const char* input, char* output)
 {
     uint32_t hash[64/4];
     char hashOrder[HASH_FUNC_COUNT + 1] = { 0 };
@@ -83,7 +83,7 @@ void x16rv2_hash(const char* input, char* output, uint32_t len)
     sph_tiger_context        ctx_tiger;
 
     void *in = (void*) input;
-    int size = len; // should be 80
+    int size = 80;
     int i;
     int j;
 
@@ -193,5 +193,5 @@ void x16rv2_hash(const char* input, char* output, uint32_t len)
         in = (void*) hash;
         size = 64;
     }
-    memcpy(output, hash, 64);
+    memcpy(output, hash, 32);
 }
