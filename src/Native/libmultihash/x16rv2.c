@@ -193,5 +193,5 @@ void x16rv2_hash(const char* input, char* output, uint32_t len)
         in = (void*) hash;
         size = 64;
     }
-    memcpy(output, hash, 32);
+    memcpy(output, hash, 64);
 }
