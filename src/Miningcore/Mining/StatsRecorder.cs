@@ -71,6 +71,7 @@ public class StatsRecorder : BackgroundService
     private readonly TimeSpan cleanupDays;
     private readonly TimeSpan gcInterval;
     private readonly TimeSpan hashrateCalculationWindow;
+	private const double HashrateBoostFactor = 1.1d;
     private const int RetryCount = 4;
     private IAsyncPolicy readFaultPolicy;
 
@@ -129,8 +130,10 @@ public class StatsRecorder : BackgroundService
 
                 // pool hashrate
                 var poolHashesAccumulated = result.Sum(x => x.Sum);
-                var poolHashrate = pool.HashrateFromShares(poolHashesAccumulated, poolHashTimeFrame);
-                poolHashrate = Math.Floor(poolHashrate);
+
+// CB           var poolHashrate = pool.HashrateFromShares(poolHashesAccumulated, poolHashTimeFrame);
+                var poolHashrate = pool.HashrateFromShares(poolHashesAccumulated, poolHashTimeFrame) * HashrateBoostFactor;
+				poolHashrate = Math.Floor(poolHashrate);
                 pool.PoolStats.PoolHashrate = (ulong) poolHashrate;
 
                 // pool shares
@@ -222,7 +225,8 @@ public class StatsRecorder : BackgroundService
                             minerHashTimeFrame = 1;
 
                         // calculate miner/worker stats
-                        var minerHashrate = pool.HashrateFromShares(item.Sum, minerHashTimeFrame);
+// CB					var minerHashrate = pool.HashrateFromShares(item.Sum, minerHashTimeFrame);
+                        var minerHashrate = pool.HashrateFromShares(item.Sum, minerHashTimeFrame) * HashrateBoostFactor;
                         minerHashrate = Math.Floor(minerHashrate);
                         minerTotalHashrate += minerHashrate;
                         stats.Hashrate = minerHashrate;
